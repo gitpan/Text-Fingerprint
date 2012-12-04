@@ -12,62 +12,62 @@ our %EXPORT_TAGS    = (all => [qw(fingerprint fingerprint_ngram)]);
 our @EXPORT_OK      = (@{$EXPORT_TAGS{all}});
 our @EXPORT         = qw();
 
+use List::MoreUtils qw(uniq);
 use Text::Unidecode;
 
-our $VERSION = '0.001'; # VERSION
+our $VERSION = '0.002'; # VERSION
 
 
-sub fingerprint {
+sub fingerprint ($) {
     my ($string) = @_;
 
+    $string =~ s{
+        ^\s+ |
+        \s+$
+    }{}gsx;
+
     return join q( ) =>
-        sort
-        keys {
-            map {
-                $_ => 1
-            } split
-                m{[
-                    \p{XPerlSpace} |
-                    \p{XPosixCntrl} |
-                    \p{XPosixPunct}
-                ]+}x =>
-                    lc unidecode
-                    $string =~ s{
-                        ^\s+ |
-                        \s+$
-                    }{}grsx
-        };
+        sort(
+            uniq(
+                split(
+                    m{[
+                        \p{XPerlSpace} |
+                        \p{XPosixCntrl} |
+                        \p{XPosixPunct}
+                    ]+}x,
+                    lc(unidecode($string))
+                )
+            )
+        );
 }
 
 
-sub fingerprint_ngram {
-    my ($string, $n) = @_;
-    $n //= 2;
+sub fingerprint_ngram ($;$) {
+    my ($string, $n) = (@_, 2);
+
+    $string =~ s{
+        \p{XPerlSpace} |
+        \p{XPosixCntrl} |
+        \p{XPosixPunct}
+    }{}gsx;
 
     return join q() =>
-        sort
-        keys {
-            map {
-                $_ => 1
-            } (
-                lc unidecode
-                $string =~ s{
-                    \p{XPerlSpace} |
-                    \p{XPosixCntrl} |
-                    \p{XPosixPunct}
-                }{}grsx
-            ) =~ m{
-                (?=
-                    (.{$n})
-                )
-            }gx
-        };
+        sort(
+            uniq(
+                lc(unidecode($string)) =~ m{
+                    (?=
+                        (.{$n})
+                    )
+                }gx
+            )
+        );
 }
 
 
 1;
 
 __END__
+
 =pod
 
 =encoding utf8
@@ -78,12 +78,12 @@ Text::Fingerprint - perform simple text clustering by key collision
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 SYNOPSIS
 
-    use feature qw(say);
-    use utf8;
+    #!/usr/bin/env perl
+    use common::sense;
 
     use Text::Fingerprint qw(:all);
 
@@ -100,6 +100,9 @@ version 0.001
     # abacadaialamanarasbucachcudedoeaedeieleoetevfeg
     # uhaifiminiritixizjakokylilsmamqngnoocoeoiojokop
     # osovowpepipoqurarnsdsksotatetiucueuiutvevowaxoyv
+
+    say fingerprint_ngram($str, 1);
+    # abcdefghijklmnopqrstuvwxyz
 
 =head1 DESCRIPTION
 
@@ -200,4 +203,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

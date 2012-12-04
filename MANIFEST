@@ -6,7 +6,9 @@ META.yml
 Makefile.PL
 README
 dist.ini
+eg/word-clusters.pl
 lib/Text/Fingerprint.pm
+perlcritic.rc
 t/00-compile.t
 t/00-load.t
 t/10-simple.t

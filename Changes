@@ -1,3 +1,28 @@
-Changelog for Text::Fingerprint (full version at https://github.com/creaktive/Text-Fingerprint)
+Changelog for Text-Fingerprint
 
-0.001     2012-03-29
+0.002 2012-12-04T14:56:12
+ [Stanislaw Pusep <creaktive@gmail.com>]
+ - added word clustering example
+
+ - prototypes, at last!
+
+ - better code readability
+
+ - updated Dist::Zilla profile
+
+ - test refactor
+
+ - now requires Perl v5.008 instead of v5.014
+
+
+ [Stanislaw Pusep <stanislav.poussep@buscapecompany.com>]
+ - Changelog
+
+
+v0.001 2012-03-29T18:08:46
+ [Stanislaw Pusep <stanislav.poussep@buscapecompany.com>]
+ - some documentation
+
+ - INIT
+
+
