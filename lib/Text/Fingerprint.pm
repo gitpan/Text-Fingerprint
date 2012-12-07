@@ -15,26 +15,32 @@ our @EXPORT         = qw();
 use List::MoreUtils qw(uniq);
 use Text::Unidecode;
 
-our $VERSION = '0.002'; # VERSION
+our $VERSION = '0.003'; # VERSION
 
+
+# Unicode variants available since http://www.nntp.perl.org/group/perl.perl5.changes/2010/10/msg27957.html
+my $NON_WORD = ($^V < 5.013007)
+    ? q([
+        \p{SpacePerl} |
+        \p{PosixCntrl} |
+        \p{PosixPunct}
+    ]+)
+    : q([
+        \p{XPerlSpace} |
+        \p{XPosixCntrl} |
+        \p{XPosixPunct}
+    ]+);
 
 sub fingerprint ($) {
     my ($string) = @_;
 
-    $string =~ s{
-        ^\s+ |
-        \s+$
-    }{}gsx;
+    $string =~ s{^ $NON_WORD | $NON_WORD $}{}gosx;
 
     return join q( ) =>
         sort(
             uniq(
                 split(
-                    m{[
-                        \p{XPerlSpace} |
-                        \p{XPosixCntrl} |
-                        \p{XPosixPunct}
-                    ]+}x,
+                    m{${NON_WORD}}ox,
                     lc(unidecode($string))
                 )
             )
@@ -45,11 +51,7 @@ sub fingerprint ($) {
 sub fingerprint_ngram ($;$) {
     my ($string, $n) = (@_, 2);
 
-    $string =~ s{
-        \p{XPerlSpace} |
-        \p{XPosixCntrl} |
-        \p{XPosixPunct}
-    }{}gsx;
+    $string =~ s{${NON_WORD}}{}gosx;
 
     return join q() =>
         sort(
@@ -78,7 +80,7 @@ Text::Fingerprint - perform simple text clustering by key collision
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 
