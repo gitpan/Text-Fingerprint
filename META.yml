@@ -28,4 +28,4 @@ resources:
   bugtracker: https://github.com/creaktive/Text-Fingerprint/issues
   homepage: https://github.com/creaktive/Text-Fingerprint
   repository: git://github.com/creaktive/Text-Fingerprint.git
-version: 0.003
+version: 0.004

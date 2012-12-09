@@ -2,7 +2,7 @@ NAME
     Text::Fingerprint - perform simple text clustering by key collision
 
 VERSION
-    version 0.003
+    version 0.004
 
 SYNOPSIS
         #!/usr/bin/env perl
@@ -49,7 +49,7 @@ FUNCTIONS
     *   change all characters to their lowercase representation
 
     *   split the string into punctuation, whitespace and control
-        characters-separated tokens
+        characters-separated tokens (using "/[\W_]/" regexp)
 
     *   sort the tokens and remove duplicates
 
@@ -60,18 +60,25 @@ FUNCTIONS
     similar to the "fingerprint" method described above but instead of using
     whitespace separated tokens, it uses *n-grams*, where the $n (or the
     size in chars of the token) can be specified by the user (default: 2).
+    Algorithm steps:
 
-    *   change all characters to their lowercase representation
-
-    *   remove all punctuation, whitespace, and control characters
+    *   remove all punctuation, whitespace, and control characters (using
+        "/[\W_]/" regexp)
 
     *   normalize extended western characters to their ASCII representation
+
+    *   change all characters to their lowercase representation
 
     *   obtain all the string n-grams
 
     *   sort the n-grams and remove duplicates
 
     *   join the sorted n-grams back together
+
+CAVEAT
+    Fingerprint functions *are not exactly the same* as those found in
+    Google Refine! They were slightly changed to take advantage of the
+    superb Perl handling of Unicode characters.
 
 SEE ALSO
     *   Text::Unidecode
