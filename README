@@ -2,7 +2,7 @@ NAME
     Text::Fingerprint - perform simple text clustering by key collision
 
 VERSION
-    version 0.004
+    version 0.005
 
 SYNOPSIS
         #!/usr/bin/env perl
@@ -41,12 +41,12 @@ FUNCTIONS
     The process that generates the key from a $string value is the following
     (note that the order of these operations is significant):
 
-    *   remove leading and trailing whitespace
-
     *   normalize extended western characters to their ASCII representation
         (for example "gödel" → "godel")
 
     *   change all characters to their lowercase representation
+
+    *   remove leading and trailing whitespace
 
     *   split the string into punctuation, whitespace and control
         characters-separated tokens (using "/[\W_]/" regexp)
@@ -62,12 +62,12 @@ FUNCTIONS
     size in chars of the token) can be specified by the user (default: 2).
     Algorithm steps:
 
-    *   remove all punctuation, whitespace, and control characters (using
-        "/[\W_]/" regexp)
-
     *   normalize extended western characters to their ASCII representation
 
     *   change all characters to their lowercase representation
+
+    *   remove all punctuation, whitespace, and control characters (using
+        "/[\W_]/" regexp)
 
     *   obtain all the string n-grams
 

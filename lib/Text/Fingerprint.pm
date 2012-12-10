@@ -15,7 +15,7 @@ our @EXPORT         = qw();
 use List::MoreUtils qw(uniq);
 use Text::Unidecode;
 
-our $VERSION = '0.004'; # VERSION
+our $VERSION = '0.005'; # VERSION
 
 
 my $NON_WORD = qr{ [\W_]+ }x;
@@ -23,6 +23,7 @@ my $NON_WORD = qr{ [\W_]+ }x;
 sub fingerprint ($) {
     my ($string) = @_;
 
+    $string = lc unidecode $string;
     $string =~ s{^ $NON_WORD | $NON_WORD $}{}gosx;
 
     return join q( ) =>
@@ -30,7 +31,7 @@ sub fingerprint ($) {
             uniq(
                 split(
                     m{ $NON_WORD }ox,
-                    lc(unidecode($string))
+                    $string
                 )
             )
         );
@@ -40,12 +41,13 @@ sub fingerprint ($) {
 sub fingerprint_ngram ($;$) {
     my ($string, $n) = (@_, 2);
 
+    $string = lc unidecode $string;
     $string =~ s{ $NON_WORD }{}gosx;
 
     return join '' =>
         sort(
             uniq(
-                lc(unidecode($string)) =~ m{
+                $string =~ m{
                     (?=
                         (.{$n})
                     )
@@ -69,7 +71,7 @@ Text::Fingerprint - perform simple text clustering by key collision
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 SYNOPSIS
 
@@ -112,15 +114,15 @@ The process that generates the key from a C<$string> value is the following (not
 
 =item *
 
-remove leading and trailing whitespace
-
-=item *
-
 normalize extended western characters to their ASCII representation (for example "gödel" → "godel")
 
 =item *
 
 change all characters to their lowercase representation
+
+=item *
+
+remove leading and trailing whitespace
 
 =item *
 
@@ -145,15 +147,15 @@ Algorithm steps:
 
 =item *
 
-remove all punctuation, whitespace, and control characters (using C</[\W_]/> regexp)
-
-=item *
-
 normalize extended western characters to their ASCII representation
 
 =item *
 
 change all characters to their lowercase representation
+
+=item *
+
+remove all punctuation, whitespace, and control characters (using C</[\W_]/> regexp)
 
 =item *
 
