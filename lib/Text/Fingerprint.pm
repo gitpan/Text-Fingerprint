@@ -15,7 +15,7 @@ our @EXPORT         = qw();
 use List::MoreUtils qw(uniq);
 use Text::Unidecode;
 
-our $VERSION = '0.005'; # VERSION
+our $VERSION = '0.006'; # VERSION
 
 
 my $NON_WORD = qr{ [\W_]+ }x;
@@ -63,7 +63,7 @@ __END__
 
 =pod
 
-=encoding utf8
+=encoding UTF-8
 
 =head1 NAME
 
@@ -71,7 +71,7 @@ Text::Fingerprint - perform simple text clustering by key collision
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
@@ -196,7 +196,7 @@ Stanislaw Pusep <stas@sysd.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2012 by Stanislaw Pusep.
+This software is copyright (c) 2014 by Stanislaw Pusep.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
